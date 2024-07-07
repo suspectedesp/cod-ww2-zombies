@@ -9,8 +9,6 @@
 
 using json = nlohmann::json;
 
-using namespace std;
-
 int main()
 {
     const wchar_t* title = L"cod ww2 zombies by suspectedesp on UnknownCheats";
@@ -20,10 +18,10 @@ int main()
     bool allowwithoutwindow = false;
     if (hwnd == NULL) 
     {
-        cout << "Cannot find window, open Call of Duty: WWII Multiplayer" << endl;
+        std::cout << "Cannot find window, open Call of Duty: WWII Multiplayer" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         if (allowwithoutwindow) {
-            cout << "Debug mode is activated, starting regardless";
+            std::cout << "Debug mode is activated, starting regardless" << std::endl;
         }
         else {
             return 1;
@@ -35,7 +33,7 @@ int main()
     HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procID);
     if (handle == NULL) 
     {
-        cout << "Cannot obtain process handle" << endl;
+        std::cout << "Cannot obtain process handle" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         return 1;
     }

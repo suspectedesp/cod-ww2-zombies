@@ -34,7 +34,7 @@ std::string GetUsernameTypeFromJSON(const std::string& jsonFilePath)
     if (!jsonFile.is_open()) 
     {
         std::cerr << "Could not open the JSON file: " << jsonFilePath << std::endl;
-        return "static"; // Return a default type or handle the error as needed
+        return "";
     }
 
     json jsonData;
@@ -49,6 +49,7 @@ void DisplayUsername(HANDLE handle, uintptr_t modulebase)
 {
     uintptr_t user_address = RPM<uintptr_t>(handle, modulebase + selfUsernameAddress) + selfUsernameOffset;
 
+    // getting path for json
     std::string executablePath = GetExecutablePath();
     std::string executableDir = GetExecutableDir(executablePath);
     std::string jsonFilePath = executableDir + "\\data.json";

@@ -23,10 +23,12 @@ const uintptr_t m1928Offset = 0x7C8;
 const uintptr_t machinePistole = 0x0A0C7388;
 const uintptr_t machinePistole_pistole1 = 0x7B4;
 const uintptr_t machinePistole_pistole2 = 0x7B0;
-const uintptr_t type100 = 0x0A0C7388;
-const uintptr_t type100Offset = 0x7C8;
 const uintptr_t svt40 = 0x0A0C7388;
 const uintptr_t svt40Offset = 0x7B0;
+const uintptr_t teslaGun = 0x0C804900;
+const uintptr_t teslaGunOffset = 0x7B0;
+const uintptr_t type100 = 0x0A0C7388;
+const uintptr_t type100Offset = 0x7C8;
 
 //special
 #define SPECIAL_ABILITY_MAX 1073741824
