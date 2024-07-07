@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/.vs/cod-ww2-zombies
+/cod-ww2-zombies/x64/Release
+/x64/Release
