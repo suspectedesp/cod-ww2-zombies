@@ -83,4 +83,4 @@ bool GetBooleanFromJSON(const std::string& key, bool defaultValue = false)
 }
 
 
-#endif MANAGE_JSON_HPP
+#endif // MANAGE_JSON_HPP
