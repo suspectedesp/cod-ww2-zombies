@@ -2,10 +2,8 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
-#include <iostream>
-#include <vector>
-#include <Windows.h>
-#include <TlHelp32.h>
+#include "../includes.h"
+
 
 template <typename T>
 BOOL WPM(HANDLE hHand, uintptr_t Address, T val) 
@@ -41,29 +39,5 @@ uintptr_t GetModuleBase(const wchar_t* modName, DWORD PID)
     CloseHandle(hSnap);
     return 0;
 }
-
-
-
-std::string GetExecutablePath() 
-{
-    char buffer[MAX_PATH];
-    DWORD size = GetModuleFileNameA(NULL, buffer, MAX_PATH);
-    if (size == 0) 
-    {
-        throw std::runtime_error("Failed to get executable path");
-    }
-    return std::string(buffer, size);
-}
-
-std::string GetExecutableDir(const std::string& executablePath) 
-{
-    size_t pos = executablePath.find_last_of("\\/");
-    if (pos == std::string::npos) 
-    {
-        return ""; // No directory part found
-    }
-    return executablePath.substr(0, pos);
-}
-
 
 #endif

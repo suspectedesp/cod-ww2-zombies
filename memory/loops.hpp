@@ -1,83 +1,39 @@
-#include <atomic>
-
+#include "../includes.h"
 #include "engine.hpp"
-#include "offsets.h"
-#include "../json/json.hpp"
 
 using namespace std;
 
 //being able to change bool outside because of atomic
 atomic<bool> changedisplayname(true);
 
-using json = nlohmann::json;
-
-std::string GetUsernameFromJSON(const std::string& jsonFilePath) 
-{
-    std::ifstream jsonFile(jsonFilePath);
-    if (!jsonFile.is_open()) 
-    {
-        std::cerr << "Could not open the JSON file: " << jsonFilePath << std::endl;
-        return "";
-    }
-
-    json jsonData;
-    jsonFile >> jsonData;
-    jsonFile.close();
-
-    std::string username = jsonData.value("username", "default_username");
-    return username;
-}
-
-std::string GetUsernameTypeFromJSON(const std::string& jsonFilePath) 
-{
-    std::ifstream jsonFile(jsonFilePath);
-    if (!jsonFile.is_open()) 
-    {
-        std::cerr << "Could not open the JSON file: " << jsonFilePath << std::endl;
-        return "";
-    }
-
-    json jsonData;
-    jsonFile >> jsonData;
-    jsonFile.close();
-
-    std::string usernameType = jsonData.value("username-type", "static");
-    return usernameType;
-}
-
 void DisplayUsername(HANDLE handle, uintptr_t modulebase)
 {
     uintptr_t user_address = RPM<uintptr_t>(handle, modulebase + selfUsernameAddress) + selfUsernameOffset;
 
-    // getting path for json
-    std::string executablePath = GetExecutablePath();
-    std::string executableDir = GetExecutableDir(executablePath);
-    std::string jsonFilePath = executableDir + "\\data.json";
-
-    std::string username = GetUsernameFromJSON(jsonFilePath);
-    std::string username_type = GetUsernameTypeFromJSON(jsonFilePath);
+    std::string username = GetValueFromJSON("username", "default_username");
+    std::string usernameType = GetValueFromJSON("username-type", "static");
 
     std::string modifiedUsername;
     
     while (true)
     {
-        if (username_type == "static") 
+        if (usernameType == "static")
         {
             changedisplayname = false;
             while (!changedisplayname)
             {
                 modifiedUsername = username;
                 WPM(handle, user_address, modifiedUsername);
-                username = GetUsernameFromJSON(jsonFilePath);
-                username_type = GetUsernameTypeFromJSON(jsonFilePath);
-                if (username_type != "static")
+                username = GetValueFromJSON("username", "default_username");
+                usernameType = GetValueFromJSON("username-type", "static");
+                if (usernameType != "static")
                 {
                     changedisplayname = true;
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
             }
         }
-        else if (username_type == "dynamic") {
+        else if (usernameType == "dynamic") {
             changedisplayname = true;
             while (changedisplayname) {
                 for (size_t i = 0; i < username.size(); ++i) 
@@ -101,9 +57,9 @@ void DisplayUsername(HANDLE handle, uintptr_t modulebase)
                         std::this_thread::sleep_for(std::chrono::milliseconds(33));
                     }
                 }
-                username = GetUsernameFromJSON(jsonFilePath);
-                username_type = GetUsernameTypeFromJSON(jsonFilePath);
-                if (username_type != "dynamic")
+                username = GetValueFromJSON("username", "default_username");
+                usernameType = GetValueFromJSON("username-type", "static");
+                if (usernameType != "dynamic")
                 {
                     changedisplayname = false;
                 }

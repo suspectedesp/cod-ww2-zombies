@@ -2,8 +2,6 @@
 #ifndef OFFSETS_H
 #define OFFSETS_H
 
-#include <iostream>
-
 //self
 const uintptr_t selfHealthAddress = 0x0A2D7DC8;
 const uintptr_t selfHealthOffset = 0x2DC;
